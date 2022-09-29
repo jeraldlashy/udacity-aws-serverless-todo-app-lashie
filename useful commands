@@ -1,0 +1,28 @@
+
+npm install -g serverless@2.21.1
+serverless --version
+
+# Login to your dashboard from the CLI. It will ask to open your browser and finish the process.
+serverless login
+# Configure serverless to use the AWS credentials to deploy the application
+# You need to have a pair of Access key (YOUR_ACCESS_KEY_ID and YOUR_SECRET_KEY) of an IAM user with Admin access permissions
+sls config credentials --provider aws --key AKIAQNVIYR5QFI4FGW7A --secret EyDFSFwv1gL6gkpfNjM0lfWq5avap7x/AKC3EvBJ --profile serverless
+
+cd backend
+npm update --save
+npm audit fix
+# For the first time, create an application in your org in Serverless portal
+serverless
+# Next time, deploy the app and note the endpoint url in the end
+serverless deploy --verbose
+# If you face a permissions error, you may need to specify the user profile
+sls deploy -v --aws-profile serverless
+# sls is shorthand for serverless
+# -v is shorthand for --verbose
+
+
+cd client
+npm update --save
+npm audit fix --legacy-peer-deps
+npm install --save-dev
+npm run start
