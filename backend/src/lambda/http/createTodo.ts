@@ -17,22 +17,29 @@ export const handler = middy(
     const newTodo: CreateTodoRequest = JSON.parse(event.body)
     const userId = event.requestContext.authorizer.principalId
 
-    const res = await createTodo(userId, newTodo)
 
     let statusCode
     let body
 
-    if (res instanceof CustomError) {
-      statusCode = res.code
-      body = JSON.stringify({ msg: res.message })
-    } else {
-      statusCode = 201
-      body = JSON.stringify({
-        item: {
-          ...res
-        }
-      })
+    if (newTodo.name == '' ){
+      statusCode = 204
+      body = JSON.stringify({ msg: "Please provide the body text" })
+    }else{
+      const res = await createTodo(userId, newTodo)
+      if (res instanceof CustomError) {
+        statusCode = res.code
+        body = JSON.stringify({ msg: res.message })
+      } else {
+        statusCode = 201
+        body = JSON.stringify({
+          item: {
+            ...res
+          }
+        })
+      }
     }
+
+
 
     return {
       statusCode,

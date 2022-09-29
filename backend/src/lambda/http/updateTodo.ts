@@ -19,14 +19,18 @@ export const handler = middy(
     const userId = event.requestContext.authorizer.principalId
     const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
 
-    const res = await updateTodo(userId, todoId, updatedTodo)
-
     let statusCode
-
-    if (res instanceof CustomError) {
-      statusCode = res.code
-    } else {
-      statusCode = 200
+    let body = ''
+    if (updateTodo.name == '' ){
+      statusCode = 204
+      body = JSON.stringify({ msg: "Please provide the body text" })
+    } else{
+      const res = await updateTodo(userId, todoId, updatedTodo)
+      if (res instanceof CustomError) {
+        statusCode = res.code
+      } else {
+        statusCode = 200
+      }
     }
 
     return {
@@ -35,7 +39,7 @@ export const handler = middy(
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true
       },
-      body: ''
+      body: body
     }
   }
 )
