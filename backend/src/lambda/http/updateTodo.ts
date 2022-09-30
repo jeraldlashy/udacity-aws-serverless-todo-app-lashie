@@ -22,7 +22,7 @@ export const handler = middy(
     let statusCode
     let body = ''
     if (updateTodo.name == '' ){
-      statusCode = 204
+      statusCode = 400
       body = JSON.stringify({ msg: "Please provide the body text" })
     } else{
       const res = await updateTodo(userId, todoId, updatedTodo)

@@ -22,7 +22,7 @@ export const handler = middy(
     let body
 
     if (newTodo.name == '' ){
-      statusCode = 204
+      statusCode = 400
       body = JSON.stringify({ msg: "Please provide the body text" })
     }else{
       const res = await createTodo(userId, newTodo)
@@ -38,8 +38,6 @@ export const handler = middy(
         })
       }
     }
-
-
 
     return {
       statusCode,
